@@ -9,142 +9,154 @@
 import UIKit
 import CoreBluetooth
 
-class AddBluetoothBridgeViewController: UIViewController {
-    
-    var peripherals = Set<CBPeripheral>()
-    var connectedPeripheral: CBPeripheral!
-    @IBOutlet weak var barButtonItem: UIBarButtonItem!
-    @IBOutlet weak var tableView: UITableView!
-    var centralManager: CBCentralManager!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        centralManager = CBCentralManager(delegate: self, queue: nil)
+class PeripheralViewController: UIViewController {
+  @IBOutlet private var barButtonItem: UIBarButtonItem!
+  @IBOutlet private var tableView: UITableView!
+  
+  enum Constant {
+    static let serviceName = "InsertServiceNameHere"
+    static let characteristicName = "InsertCharacteristicNameHere"
+  }
+  
+  private var centralManager: CBCentralManager!
+  private var peripherals = Set<CBPeripheral>()
+  private var localNames = [UUID : String]()
+  private var connectedPeripheral: CBPeripheral!
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    centralManager = CBCentralManager(delegate: self, queue: nil)
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    connectedPeripheral = nil
+    barButtonItem.title = centralManager.isScanning ? "Stop" : "Start"
+  }
+  
+  deinit {
+    centralManager.stopScan()
+  }
+  
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if let destination = segue.destination as? ServiceViewController {
+      centralManager.stopScan()
+      destination.peripheral = connectedPeripheral
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        connectedPeripheral = nil
-        barButtonItem.title = centralManager.isScanning ? "Stop" : "Start"
+  }
+  
+  @IBAction func tapStartStop(_ sender: UIBarButtonItem) {
+    if centralManager.isScanning {
+      peripherals.removeAll()
+      centralManager.scanForPeripherals(withServices: nil, options: nil)
+      sender.title = "Stop"
+    } else {
+      centralManager.stopScan()
+      sender.title = "Start"
     }
-    
-    deinit {
-        centralManager.stopScan()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? PeripheralViewController {
-            centralManager.stopScan()
-            destination.peripheral = connectedPeripheral
-        }
-    }
-    
-    @IBAction func tapStartStop(_ sender: UIBarButtonItem) {
-        if centralManager.isScanning {
-            peripherals.removeAll()
-            centralManager.scanForPeripherals(withServices: nil, options: nil)
-            sender.title = "Stop"
-        } else {
-            centralManager.stopScan()
-            sender.title = "Start"
-        }
-    }
-    
-    
-    
+  }
+  
+  
+  
 }
 
-extension AddBluetoothBridgeViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return peripherals.count
+extension PeripheralViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return peripherals.count
+  }
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    var cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+    if cell == nil {
+      cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
     }
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "cell")
-        if cell == nil {
-            cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-        }
-        let peripheral = peripherals[peripherals.index(peripherals.startIndex, offsetBy: indexPath.row)]
-        cell?.textLabel?.text = "Name: \(peripheral.name ?? "<none>")"
-        cell?.detailTextLabel?.text = "Identifier: \(peripheral.identifier)"
-        return cell!
-    }
+    let peripheral = peripherals[peripherals.index(peripherals.startIndex, offsetBy: indexPath.row)]
+    cell?.textLabel?.text = "Name: \(peripheral.name ?? "No name")"
+    cell?.detailTextLabel?.text = "Identifier: \(peripheral.identifier)"
+    return cell!
+  }
 }
 
-extension AddBluetoothBridgeViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let peripheral = peripherals[peripherals.index(peripherals.startIndex, offsetBy: indexPath.row)]
-        centralManager.connect(peripheral, options: nil)
-    }
+extension PeripheralViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let peripheral = peripherals[peripherals.index(peripherals.startIndex, offsetBy: indexPath.row)]
+    centralManager.connect(peripheral, options: nil)
+  }
 }
 
-extension AddBluetoothBridgeViewController: CBCentralManagerDelegate {
-    func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        switch central.state {
-        case .poweredOn:
-            centralManager.scanForPeripherals(withServices: nil, options: nil)
-            print("\nBlue tooth supported. Scanning...")
-        case .poweredOff, .unsupported, .unauthorized:
-            print("Blue tooth not supported")
-        default:
-            break
-        }
+extension PeripheralViewController: CBCentralManagerDelegate {
+  func centralManagerDidUpdateState(_ central: CBCentralManager) {
+    switch central.state {
+    case .poweredOn:
+      centralManager.scanForPeripherals(withServices: nil, options: nil)
+      print("\nBlue tooth supported. Scanning...")
+    case .poweredOff, .unsupported, .unauthorized:
+      print("Blue tooth not supported")
+    default:
+      break
     }
+  }
+  
+  func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+    print(advertisementData)
+    peripherals.remove(peripheral)
+    peripherals.insert(peripheral)
+    peripheral.delegate = self
+    tableView.reloadData()
     
-    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        guard peripherals.contains(peripheral) == false else {
-            return
-        }
-        peripherals.insert(peripheral)
-        tableView.reloadData()
-
+  }
+  
+  func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+    let alert = UIAlertController(title: "error", message: "cannnot connected to \(peripheral)", preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
+    present(alert, animated: true, completion: nil)
+  }
+  
+  func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+    guard connectedPeripheral == nil else {
+      return
     }
-    
-    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        let alert = UIAlertController(title: "error", message: "cannnot connected to \(peripheral)", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-    }
-    
-    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        guard connectedPeripheral == nil else {
-            return
-        }
-        print("connected to \(peripheral)")
-        connectedPeripheral = peripheral
-        performSegue(withIdentifier: String(describing: PeripheralViewController.self), sender: self)
-    }
-    
+    print("connected to \(peripheral)")
+    connectedPeripheral = peripheral
+    performSegue(withIdentifier: String(describing: ServiceViewController.self), sender: self)
+  }
+  
 }
 
-extension AddBluetoothBridgeViewController: CBPeripheralDelegate {
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        if let services = peripheral.services {
-            for service in services {
-                if (service.uuid == CBUUID(string: "EcobridgeSerivceUUID")) {
-                    peripheral.discoverCharacteristics(nil, for: service)
-                    centralManager.stopScan()
-                }
-            }
-        }
+extension PeripheralViewController: CBPeripheralDelegate {
+  func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+    print(peripheral)
+    let targetUuid = CBUUID(string: Constant.serviceName)
+    guard let service = peripheral.services?.first(where: { $0.uuid == targetUuid}) else {
+      print("service not found")
+      return
     }
-    
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        guard let characteristics = service.characteristics else {
-            return
-        }
-        for characteristic in characteristics {
-            if characteristic.uuid == CBUUID(string: "Bridge characteristic") {
-                let value: UInt8 = 0xDE
-                let data = Data(bytes: [value])
-                peripheral.writeValue(data, for: characteristic, type: .withResponse)
-            }
-        }
+    peripheral.discoverCharacteristics(nil, for: service)
+    centralManager.stopScan()
+  }
+  
+  func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+    let targetCharacteristic = CBUUID(string: Constant.characteristicName)
+    guard let characteristic = service.characteristics?.first(where: { $0.uuid == targetCharacteristic }) else {
+      return
     }
-    
-    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
-        
+    let value: UInt8 = 0xDE
+    let data = Data([value])
+    peripheral.writeValue(data, for: characteristic, type: .withResponse)
+  }
+  
+  func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
+    print(peripheral)
+    if peripherals.contains(peripheral) {
+      peripherals.remove(peripheral)
     }
+    peripherals.insert(peripheral)
+    tableView.reloadData()
+  }
+  
+  func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
     
+  }
+  
 }
 
 

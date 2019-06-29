@@ -9,7 +9,7 @@
         <!--Bluetooth Devices-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="AddBluetoothBridgeViewController" id="BYZ-38-t0r" customClass="AddBluetoothBridgeViewController" customModule="bluetooth" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PeripheralViewController" id="BYZ-38-t0r" customClass="PeripheralViewController" customModule="bluetooth" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -44,7 +44,7 @@
                     <connections>
                         <outlet property="barButtonItem" destination="9c5-VD-mgX" id="5O7-bQ-vTi"/>
                         <outlet property="tableView" destination="ClV-v1-sYx" id="dz3-4D-fan"/>
-                        <segue destination="8dS-UN-OhA" kind="show" identifier="PeripheralViewController" id="2L3-zg-39Y"/>
+                        <segue destination="8dS-UN-OhA" kind="show" identifier="ServiceViewController" id="2L3-zg-39Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -72,7 +72,7 @@
         <!--Services-->
         <scene sceneID="LlX-ud-J1a">
             <objects>
-                <viewController storyboardIdentifier="PeripheralViewController" id="8dS-UN-OhA" customClass="PeripheralViewController" customModule="bluetooth" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ServiceViewController" id="8dS-UN-OhA" customClass="ServiceViewController" customModule="bluetooth" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1Qb-lY-H6S"/>
                         <viewControllerLayoutGuide type="bottom" id="cL7-Ju-VVq"/>
@@ -107,7 +107,7 @@
             </objects>
             <point key="canvasLocation" x="1833" y="793"/>
         </scene>
-        <!--Services-->
+        <!--Characteristics-->
         <scene sceneID="dGC-U2-vA8">
             <objects>
                 <viewController storyboardIdentifier="CharacteristicsViewController" id="ieE-GQ-43r" customClass="CharacteristicsViewController" customModule="bluetooth" customModuleProvider="target" sceneMemberID="viewController">
@@ -135,7 +135,7 @@
                             <constraint firstItem="8AP-6m-kaG" firstAttribute="centerY" secondItem="hsS-pE-gIQ" secondAttribute="centerY" id="sdv-WN-Qgk"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Services" id="zKx-Sw-Xq7"/>
+                    <navigationItem key="navigationItem" title="Characteristics" id="zKx-Sw-Xq7"/>
                     <connections>
                         <outlet property="tableView" destination="8AP-6m-kaG" id="SsQ-gY-r9K"/>
                     </connections>

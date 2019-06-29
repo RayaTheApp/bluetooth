@@ -35,6 +35,7 @@ extension CharacteristicsViewController: UITableViewDataSource {
         cell?.detailTextLabel?.text = "\(characteristic.properties)"
         return cell!
     }
+    
 }
 
 extension CharacteristicsViewController: UITableViewDelegate {
