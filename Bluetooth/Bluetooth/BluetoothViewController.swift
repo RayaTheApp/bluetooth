@@ -1,9 +1,9 @@
 //
 //  AddBluetoothBridgeViewController.swift
-//  Eco
+//  bluetooth
 //
 //  Created by Joshua Homann on 10/18/16.
-//  Copyright © 2016 Eco Automation. All rights reserved.
+//  Copyright © 2016 Joshua Homann. All rights reserved.
 //
 
 import UIKit

@@ -3,13 +3,13 @@
 //  bluetooth
 //
 //  Created by Joshua Homann on 10/19/16.
-//  Copyright © 2016 Ecoautomation. All rights reserved.
+//  Copyright © 2016 Joshua Homann. All rights reserved.
 //
 
 import UIKit
 import CoreBluetooth
 
-class PeripheralViewController: UIViewController {
+class ServiceViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var peripheral: CBPeripheral!
     var services = Set<CBService>()
@@ -31,7 +31,7 @@ class PeripheralViewController: UIViewController {
     
 }
 
-extension PeripheralViewController: UITableViewDataSource {
+extension ServiceViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return services.count
     }
@@ -46,13 +46,13 @@ extension PeripheralViewController: UITableViewDataSource {
     }
 }
 
-extension PeripheralViewController: UITableViewDelegate {
+extension ServiceViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: String(describing: CharacteristicsViewController.self), sender: self)
     }
 }
 
-extension PeripheralViewController: CBPeripheralDelegate {
+extension ServiceViewController: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         if let services = peripheral.services {
             services.forEach { self.services.insert($0) }
