@@ -10,7 +10,7 @@ import UIKit
 import CoreBluetooth
 
 class PeripheralViewController: UIViewController {
-  @IBOutlet private var barButtonItem: UIBarButtonItem!
+  @IBOutlet private var startStopButton: UIButton!
   @IBOutlet private var tableView: UITableView!
   
   enum Constant {
@@ -25,13 +25,13 @@ class PeripheralViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    centralManager = CBCentralManager(delegate: self, queue: nil)
+    centralManager = CBCentralManager(delegate: self, queue: .main)
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     connectedPeripheral = nil
-    barButtonItem.title = centralManager.isScanning ? "Stop" : "Start"
+    startStopButton.setTitle(centralManager.isScanning ? "Stop" : "Start", for: .normal)
   }
   
   deinit {
@@ -45,15 +45,14 @@ class PeripheralViewController: UIViewController {
     }
   }
   
-  @IBAction func tapStartStop(_ sender: UIBarButtonItem) {
+  @IBAction func tapStartStop(_ sender: UIButton) {
     if centralManager.isScanning {
       peripherals.removeAll()
-      centralManager.scanForPeripherals(withServices: nil, options: nil)
-      sender.title = "Stop"
+      centralManager.scanForPeripherals(withServices: [PeripheralService.serviceUuid], options: nil)
     } else {
       centralManager.stopScan()
-      sender.title = "Start"
     }
+    startStopButton.setTitle(centralManager.isScanning ? "Stop" : "Start", for: .normal)
   }
   
   
@@ -87,7 +86,7 @@ extension PeripheralViewController: CBCentralManagerDelegate {
   func centralManagerDidUpdateState(_ central: CBCentralManager) {
     switch central.state {
     case .poweredOn:
-      centralManager.scanForPeripherals(withServices: nil, options: nil)
+      centralManager.scanForPeripherals(withServices: [PeripheralService.serviceUuid], options: nil)
       print("\nBlue tooth supported. Scanning...")
     case .poweredOff, .unsupported, .unauthorized:
       print("Blue tooth not supported")
@@ -135,13 +134,19 @@ extension PeripheralViewController: CBPeripheralDelegate {
   }
   
   func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-    let targetCharacteristic = CBUUID(string: Constant.characteristicName)
-    guard let characteristic = service.characteristics?.first(where: { $0.uuid == targetCharacteristic }) else {
+    guard let characteristic = service.characteristics?.first(where: { $0.uuid == PeripheralService.characteristicUuid }) else {
       return
     }
-    let value: UInt8 = 0xDE
-    let data = Data([value])
-    peripheral.writeValue(data, for: characteristic, type: .withResponse)
+    peripheral.readValue(for: characteristic)
+  }
+
+  func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+    guard presentedViewController == nil else {
+      return
+    }
+    let alert = UIAlertController(title: "Characteristic", message: characteristic.value.flatMap{ String(data:$0, encoding: .utf8)} ?? "unknown", preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
+    present(alert, animated: true, completion: nil)
   }
   
   func peripheralDidUpdateName(_ peripheral: CBPeripheral) {

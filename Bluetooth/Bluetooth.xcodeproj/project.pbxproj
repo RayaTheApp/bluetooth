@@ -16,6 +16,8 @@
 		0313412222D938FE0043DB4B /* PeripheralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0313411F22D938FD0043DB4B /* PeripheralViewController.swift */; };
 		0313412322D938FE0043DB4B /* BluetoothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0313412022D938FE0043DB4B /* BluetoothViewController.swift */; };
 		0313412422D938FE0043DB4B /* CharacteristicsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0313412122D938FE0043DB4B /* CharacteristicsViewController.swift */; };
+		0313412622D941BE0043DB4B /* PeripheralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0313412522D941BE0043DB4B /* PeripheralService.swift */; };
+		0313412822D9581D0043DB4B /* CentralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0313412722D9581D0043DB4B /* CentralService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +39,7 @@
 
 /* Begin PBXFileReference section */
 		031340EE22D938940043DB4B /* Bluetooth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bluetooth.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		031340F122D938940043DB4B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		031340F122D938940043DB4B /* AppDelegate.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; tabWidth = 2; };
 		031340F622D938940043DB4B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		031340F822D938960043DB4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		031340FB22D938960043DB4B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -48,9 +50,11 @@
 		0313410D22D938960043DB4B /* BluetoothUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BluetoothUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0313411122D938960043DB4B /* BluetoothUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothUITests.swift; sourceTree = "<group>"; };
 		0313411322D938960043DB4B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0313411F22D938FD0043DB4B /* PeripheralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralViewController.swift; sourceTree = "<group>"; };
-		0313412022D938FE0043DB4B /* BluetoothViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothViewController.swift; sourceTree = "<group>"; };
-		0313412122D938FE0043DB4B /* CharacteristicsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacteristicsViewController.swift; sourceTree = "<group>"; };
+		0313411F22D938FD0043DB4B /* PeripheralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = PeripheralViewController.swift; sourceTree = "<group>"; tabWidth = 2; };
+		0313412022D938FE0043DB4B /* BluetoothViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = BluetoothViewController.swift; sourceTree = "<group>"; tabWidth = 2; };
+		0313412122D938FE0043DB4B /* CharacteristicsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = CharacteristicsViewController.swift; sourceTree = "<group>"; tabWidth = 2; };
+		0313412522D941BE0043DB4B /* PeripheralService.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = PeripheralService.swift; sourceTree = "<group>"; tabWidth = 2; };
+		0313412722D9581D0043DB4B /* CentralService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,9 +105,11 @@
 		031340F022D938940043DB4B /* Bluetooth */ = {
 			isa = PBXGroup;
 			children = (
+				0313412522D941BE0043DB4B /* PeripheralService.swift */,
+				0313412722D9581D0043DB4B /* CentralService.swift */,
 				0313412022D938FE0043DB4B /* BluetoothViewController.swift */,
-				0313412122D938FE0043DB4B /* CharacteristicsViewController.swift */,
 				0313411F22D938FD0043DB4B /* PeripheralViewController.swift */,
+				0313412122D938FE0043DB4B /* CharacteristicsViewController.swift */,
 				031340F122D938940043DB4B /* AppDelegate.swift */,
 				031340F522D938940043DB4B /* Main.storyboard */,
 				031340F822D938960043DB4B /* Assets.xcassets */,
@@ -264,6 +270,8 @@
 			files = (
 				0313412322D938FE0043DB4B /* BluetoothViewController.swift in Sources */,
 				0313412422D938FE0043DB4B /* CharacteristicsViewController.swift in Sources */,
+				0313412622D941BE0043DB4B /* PeripheralService.swift in Sources */,
+				0313412822D9581D0043DB4B /* CentralService.swift in Sources */,
 				0313412222D938FE0043DB4B /* PeripheralViewController.swift in Sources */,
 				031340F222D938940043DB4B /* AppDelegate.swift in Sources */,
 			);
@@ -441,7 +449,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L4WMJSL77G;
 				INFOPLIST_FILE = Bluetooth/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -458,7 +468,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L4WMJSL77G;
 				INFOPLIST_FILE = Bluetooth/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

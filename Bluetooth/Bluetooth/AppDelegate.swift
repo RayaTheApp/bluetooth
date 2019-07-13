@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
 
   func applicationDidFinishLaunching(_ application: UIApplication) {
+    _ = PeripheralService.shared
   }
 
 }

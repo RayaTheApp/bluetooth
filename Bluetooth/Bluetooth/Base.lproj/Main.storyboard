@@ -1,48 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="duS-Zm-kep">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="duS-Zm-kep">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Bluetooth Devices-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="PeripheralViewController" id="BYZ-38-t0r" customClass="PeripheralViewController" customModule="bluetooth" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PeripheralViewController" id="BYZ-38-t0r" customClass="PeripheralViewController" customModule="Bluetooth" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ClV-v1-sYx">
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="kbZ-0Y-ZsD"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="oog-CX-6gg"/>
-                                </connections>
-                            </tableView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Pew-nl-p3U">
+                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Od-cD-SEq">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="tapStartStop:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Nhh-MA-cDQ"/>
+                                        </connections>
+                                    </button>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ClV-v1-sYx">
+                                        <rect key="frame" x="0.0" y="30" width="414" height="778"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="BYZ-38-t0r" id="kbZ-0Y-ZsD"/>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="oog-CX-6gg"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ClV-v1-sYx" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="5ll-xz-YRL"/>
-                            <constraint firstItem="ClV-v1-sYx" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Pkg-Z7-4ft"/>
-                            <constraint firstItem="ClV-v1-sYx" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="tnT-cZ-8LW"/>
-                            <constraint firstItem="ClV-v1-sYx" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="zow-ih-1aY"/>
+                            <constraint firstAttribute="trailing" secondItem="Pew-nl-p3U" secondAttribute="trailing" id="5Xr-dE-ngf"/>
+                            <constraint firstItem="Pew-nl-p3U" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Tx7-Ug-d1L"/>
+                            <constraint firstAttribute="bottom" secondItem="Pew-nl-p3U" secondAttribute="bottom" id="UXc-5e-08l"/>
+                            <constraint firstItem="Pew-nl-p3U" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="ole-ia-nPC"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Bluetooth Devices" id="JoK-9H-BpQ">
-                        <barButtonItem key="rightBarButtonItem" title="Stop" id="9c5-VD-mgX">
-                            <connections>
-                                <action selector="tapStartStop:" destination="BYZ-38-t0r" id="5VP-Iq-dot"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Bluetooth Devices" id="JoK-9H-BpQ"/>
                     <connections>
-                        <outlet property="barButtonItem" destination="9c5-VD-mgX" id="5O7-bQ-vTi"/>
+                        <outlet property="startStopButton" destination="3Od-cD-SEq" id="4nT-ne-Tie"/>
                         <outlet property="tableView" destination="ClV-v1-sYx" id="dz3-4D-fan"/>
                         <segue destination="8dS-UN-OhA" kind="show" identifier="ServiceViewController" id="2L3-zg-39Y"/>
                     </connections>
@@ -57,7 +67,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="duS-Zm-kep" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="rMU-9l-WCc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -72,16 +82,17 @@
         <!--Services-->
         <scene sceneID="LlX-ud-J1a">
             <objects>
-                <viewController storyboardIdentifier="ServiceViewController" id="8dS-UN-OhA" customClass="ServiceViewController" customModule="bluetooth" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ServiceViewController" id="8dS-UN-OhA" customClass="ServiceViewController" customModule="Bluetooth" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1Qb-lY-H6S"/>
                         <viewControllerLayoutGuide type="bottom" id="cL7-Ju-VVq"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="bCQ-G0-VOK">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="QOf-2k-eaH">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="8dS-UN-OhA" id="6Uy-1r-67c"/>
@@ -110,16 +121,17 @@
         <!--Characteristics-->
         <scene sceneID="dGC-U2-vA8">
             <objects>
-                <viewController storyboardIdentifier="CharacteristicsViewController" id="ieE-GQ-43r" customClass="CharacteristicsViewController" customModule="bluetooth" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CharacteristicsViewController" id="ieE-GQ-43r" customClass="CharacteristicsViewController" customModule="Bluetooth" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="eWJ-Ac-kpk"/>
                         <viewControllerLayoutGuide type="bottom" id="0Yg-hp-Zuq"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="hsS-pE-gIQ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="8AP-6m-kaG">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="ieE-GQ-43r" id="105-EK-SmC"/>
