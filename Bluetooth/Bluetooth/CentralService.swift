@@ -19,6 +19,8 @@ class CentralService: NSObject {
 }
 
 extension CentralService: CBCentralManagerDelegate {
-    
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+
+    }
 }
 

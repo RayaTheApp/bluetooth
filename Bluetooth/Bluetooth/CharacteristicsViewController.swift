@@ -14,7 +14,7 @@ class CharacteristicsViewController: UIViewController {
   var peripheral: CBPeripheral!
   var service: CBService!
   var lastValue: String?
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     peripheral.delegate = self
@@ -27,16 +27,13 @@ extension CharacteristicsViewController: UITableViewDataSource {
     return service.characteristics?.count ?? 0
   }
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    var cell = tableView.dequeueReusableCell(withIdentifier: "cell")
-    if cell == nil {
-      cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-    }
+    let cell = tableView.dequeueReusableCell(withIdentifier: "cell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
     let characteristic = service.characteristics![indexPath.row]
-    cell?.textLabel?.text = "Characteristic: \(characteristic.uuid)"
-    cell?.detailTextLabel?.text = "Value: \(lastValue ?? "none")"
-    return cell!
+    cell.textLabel?.text = "Characteristic: \(characteristic.uuid)"
+    cell.detailTextLabel?.text = "Value: \(lastValue ?? "none")"
+    return cell
   }
-  
+
 }
 
 extension CharacteristicsViewController: CBPeripheralDelegate {

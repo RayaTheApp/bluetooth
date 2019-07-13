@@ -13,11 +13,6 @@ class PeripheralViewController: UIViewController {
   @IBOutlet private var startStopButton: UIButton!
   @IBOutlet private var tableView: UITableView!
   
-  enum Constant {
-    static let serviceName = "InsertServiceNameHere"
-    static let characteristicName = "InsertCharacteristicNameHere"
-  }
-  
   private var centralManager: CBCentralManager!
   private var peripherals = Set<CBPeripheral>()
   private var localNames = [UUID : String]()
@@ -54,9 +49,6 @@ class PeripheralViewController: UIViewController {
     }
     startStopButton.setTitle(centralManager.isScanning ? "Stop" : "Start", for: .normal)
   }
-  
-  
-  
 }
 
 extension PeripheralViewController: UITableViewDataSource {
@@ -99,7 +91,6 @@ extension PeripheralViewController: CBCentralManagerDelegate {
     print(advertisementData)
     peripherals.remove(peripheral)
     peripherals.insert(peripheral)
-    peripheral.delegate = self
     tableView.reloadData()
     
   }
@@ -120,48 +111,3 @@ extension PeripheralViewController: CBCentralManagerDelegate {
   }
   
 }
-
-extension PeripheralViewController: CBPeripheralDelegate {
-  func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-    print(peripheral)
-    let targetUuid = CBUUID(string: Constant.serviceName)
-    guard let service = peripheral.services?.first(where: { $0.uuid == targetUuid}) else {
-      print("service not found")
-      return
-    }
-    peripheral.discoverCharacteristics(nil, for: service)
-    centralManager.stopScan()
-  }
-  
-  func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-    guard let characteristic = service.characteristics?.first(where: { $0.uuid == PeripheralService.characteristicUuid }) else {
-      return
-    }
-    peripheral.readValue(for: characteristic)
-  }
-
-  func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-    guard presentedViewController == nil else {
-      return
-    }
-    let alert = UIAlertController(title: "Characteristic", message: characteristic.value.flatMap{ String(data:$0, encoding: .utf8)} ?? "unknown", preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
-    present(alert, animated: true, completion: nil)
-  }
-  
-  func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
-    print(peripheral)
-    if peripherals.contains(peripheral) {
-      peripherals.remove(peripheral)
-    }
-    peripherals.insert(peripheral)
-    tableView.reloadData()
-  }
-  
-  func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
-    
-  }
-  
-}
-
-
